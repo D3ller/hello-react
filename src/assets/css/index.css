@@ -18,3 +18,11 @@
 .hw-container-lg {
     @apply max-w-8xl mx-auto;
 }
+
+.hw-container-sm {
+    @apply max-w-5xl mx-auto;
+}
+
+.text-h2 {
+    @apply text-4xl md:text-5xl [&>span]:font-bold inline-flex flex-col
+}
