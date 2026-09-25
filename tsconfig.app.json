@@ -16,6 +16,10 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
+      "@ui/*": ["./src/components/ui/*"],
+      "@features/*": ["./src/features/*"],
+      "@components/*": ["./src/components/*"],
+      "@utils/*": ["./src/utils/*"],
       "@splidejs/react-splide": ["./node_modules/@splidejs/react-splide/dist/types/index.d.ts"]
     },
 

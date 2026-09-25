@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router";
-import Navbar from "./components/Navbar.tsx";
+import Navbar from "@components/Navbar.tsx";
 import HomePage from "./pages/index/HomePage.tsx";
 import FindMyCompany from "./pages/index/FindMyCompany.tsx";
 import FindMyJob from "./pages/index/FindMyJob.tsx";
