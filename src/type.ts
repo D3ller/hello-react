@@ -4,3 +4,8 @@ export interface User {
     emailAddress: string;
     initial: string;
 }
+
+export interface Pagination {
+    currentPage: number;
+    totalPages: number;
+}
