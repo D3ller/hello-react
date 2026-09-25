@@ -15,6 +15,9 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "paths": {
+      "@splidejs/react-splide": ["./node_modules/@splidejs/react-splide/dist/types/index.d.ts"]
+    },
 
     /* Linting */
     "noUnusedLocals": true,
