@@ -1,0 +1,87 @@
+import HwLogo from "@components/Icon.tsx";
+import HButton from "@ui/HButton.tsx";
+import HInput from "@ui/HInput.tsx";
+import FormField from "@ui/Form/FormField.tsx";
+import FormLabel from "@ui/Form/FormLabel.tsx";
+import { type SubmitEvent, useState } from "react";
+import FormError from "@ui/Form/FormError.tsx";
+import { loginSchema } from "@utils/schema.ts";
+import { useAuth } from "@features/auth/provider/AuthProvider.tsx";
+
+const Login = () => {
+
+    const { login } = useAuth();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errors, setErrorState] = useState<Record<string, string>>({})
+
+    async function onFormLoginSubmit(event: SubmitEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget)
+        const result = loginSchema.safeParse(Object.fromEntries(formData))
+
+        if (!result.success) {
+            const errors: Record<string, string> = {};
+            result.error.issues.map((issue) => {
+                const field = issue.path[0];
+                if (typeof field === "string") {
+                    errors[field] = issue.message;
+                }
+            })
+            setErrorState(errors);
+            return;
+        }
+
+        setErrorState({});
+
+        try {
+            setIsSubmitting(true)
+            await login(result.data);
+        } catch (e) {
+            console.log(e)
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+
+    return (
+        <div className={"flex min-h-dvh justify-center items-center"}>
+            <form
+                onSubmit={onFormLoginSubmit}
+                className={"max-w-100 bg-neutral-50/30 w-full border border-neutral-100 min-h-60 flex flex-col gap-6 justify-start items-center p-6"}>
+                <div>
+                    <div className={"max-w-34 w-full mx-auto"}>
+                        <HwLogo/>
+                    </div>
+
+                    <div className={"px-1 mt-4"}><p className={"text-gray-500 text-center"}>Rejoignez notre communauté
+                        de plus de 2000 employeurs afin
+                        de trouver le job qui vous correspond</p>
+                    </div>
+                </div>
+
+                <div className={"flex flex-col gap-4 w-full"}>
+                    <FormField className={"flex flex-col gap-2"} required name={"email"} error={errors?.email}>
+                        <FormLabel>
+                            Email
+                        </FormLabel>
+                        <HInput autoComplete={"email"} type={"email"} placeholder={"e.g: durant.pierre@gmail.com"}/>
+                        <FormError/>
+                    </FormField>
+
+                    <FormField className={"flex flex-col gap-2"} required name={"password"} error={errors?.password}>
+                        <FormLabel>
+                            Mot de passe
+                        </FormLabel>
+                        <HInput autoComplete={"current-password"} type={"password"} placeholder={"password1234"}/>
+                        <FormError/>
+                    </FormField>
+
+                </div>
+
+                <HButton disabled={isSubmitting} type={"submit"}>Se connecter</HButton>
+            </form>
+        </div>
+    )
+}
+
+export default Login;
