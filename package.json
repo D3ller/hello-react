@@ -1,35 +1,19 @@
 {
-  "name": "1.basic-components",
+  "name": "hello-react",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
+  "description": "",
   "type": "module",
+  "packageManager": "pnpm@11.18.0",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "oxlint",
-    "preview": "vite preview"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint"
   },
-  "dependencies": {
-    "@iconify/react": "^6.0.2",
-    "@splidejs/react-splide": "^0.7.12",
-    "@tailwindcss/vite": "^4.3.3",
-    "modern-normalize": "^3.0.1",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "react-router": "^8.4.0",
-    "slugify": "^1.6.9",
-    "tailwindcss": "^4.3.3"
-  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^8.0.6",
-    "@rolldown/plugin-babel": "^0.2.4",
-    "@types/node": "^24.13.3",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
-    "@vitejs/plugin-react": "^6.1.1",
-    "babel-plugin-react-compiler": "^1.0.0",
-    "oxlint": "^1.81.0",
-    "typescript": "~6.0.2",
-    "vite": "^8.3.0"
+    "turbo": "^2.11.4"
   }
 }
