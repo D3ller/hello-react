@@ -1,5 +1,6 @@
 import { type ComponentProps, type ReactNode } from "react";
 import { NavLink, type NavLinkProps } from "react-router";
+import { cn } from "cn";
 
 export interface ButtonProps extends ComponentProps<"button">  {
     children: ReactNode,
@@ -10,10 +11,10 @@ export interface ButtonProps extends ComponentProps<"button">  {
 const HButton = ({children, onClick, to, ...props}: ButtonProps) => {
 
     if(to) {
-        return <NavLink to={to} className={"inline-block text-white bg-black px-6 md:px-8 py-4 rounded-full cursor-pointer"} onClick={() => onClick?.()}>{children}</NavLink>
+        return <NavLink to={to} className={cn("inline-block text-white bg-black px-6 md:px-8 py-4 rounded-full cursor-pointer", props.className)} onClick={onClick}>{children}</NavLink>
     } else {
         return (
-            <button {...props} className={"text-white bg-black px-8 py-4 rounded-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"} onClick={() => onClick?.()}>
+            <button {...props} className={cn("text-white bg-black px-8 py-4 rounded-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-60", props.className)} onClick={onClick}>
                 {children}
             </button>
         )
