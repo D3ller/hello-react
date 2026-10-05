@@ -1,0 +1,23 @@
+name: Main source branch guard
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate-source-branch:
+    name: Source branch must be develop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check pull request source branch
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$HEAD_REF" != "develop" ]; then
+            echo "Pull requests to main must come from develop."
+            exit 1
+          fi
