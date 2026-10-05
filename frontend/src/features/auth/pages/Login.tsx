@@ -3,10 +3,13 @@ import HButton from "@ui/HButton.tsx";
 import HInput from "@ui/HInput.tsx";
 import FormField from "@ui/Form/FormField.tsx";
 import FormLabel from "@ui/Form/FormLabel.tsx";
-import { type SubmitEvent, useState } from "react";
 import FormError from "@ui/Form/FormError.tsx";
-import { loginSchema } from "@utils/schema.ts";
+
 import { useAuth } from "@features/auth/provider/AuthProvider.tsx";
+import { loginSchema } from "@utils/schema.ts";
+
+import { type SubmitEvent, useState } from "react";
+import { Link } from "react-router";
 
 const Login = () => {
 
@@ -48,15 +51,12 @@ const Login = () => {
             <form
                 onSubmit={onFormLoginSubmit}
                 className={"max-w-100 bg-neutral-50/30 w-full border border-neutral-100 min-h-60 flex flex-col gap-6 justify-start items-center p-6"}>
-                <div>
-                    <div className={"max-w-34 w-full mx-auto"}>
+                <div className={"w-full"}>
+                    <div className={"max-w-28 w-full mx-auto mb-4"}>
                         <HwLogo/>
                     </div>
 
-                    <div className={"px-1 mt-4"}><p className={"text-gray-500 text-center"}>Rejoignez notre communauté
-                        de plus de 2000 employeurs afin
-                        de trouver le job qui vous correspond</p>
-                    </div>
+                    <div className={"text-left"}><h1 className={"text-xl font-semibold"}>Se connecter</h1></div>
                 </div>
 
                 <div className={"flex flex-col gap-4 w-full"}>
@@ -78,7 +78,11 @@ const Login = () => {
 
                 </div>
 
-                <HButton disabled={isSubmitting} type={"submit"}>Se connecter</HButton>
+
+                <div className={"w-full flex flex-col gap-6"}>
+                    <p className={"text-gray-500 text-sm"}>Vous n'avez pas de compte ? Inscrivez vous <Link to={"/auth/register"} className={"underline underline-offset-2"}>ici</Link></p>
+                    <HButton disabled={isSubmitting} type={"submit"}>Se connecter</HButton>
+                </div>
             </form>
         </div>
     )
