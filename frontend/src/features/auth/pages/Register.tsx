@@ -1,26 +1,44 @@
 import FormField from "@ui/Form/FormField.tsx";
 import FormLabel from "@ui/Form/FormLabel.tsx";
+import FormError from "@ui/Form/FormError.tsx";
+
+import HwLogo from "@components/Icon.tsx";
 import HInput from "@ui/HInput.tsx";
 import HButton from "@ui/HButton.tsx";
-import { useState, type SubmitEvent } from "react";
-import FormError from "@ui/Form/FormError.tsx";
+
 import { Link } from "react-router";
-import HwLogo from "@components/Icon.tsx";
-import { useControlledForm } from "@utils/hooks/useControlledForm.ts";
+
+import { useUncontrolledForm } from "@utils/hooks/useUncontrolledForm.ts";
+import { registerSchema } from "@utils/schema.ts";
+import { useAuth } from "@features/auth/provider/AuthProvider.tsx";
+import { FetchError } from "ofetch";
 
 const Register = () => {
 
-    const [errors, setErrorState] = useState<Record<string, string>>({})
+    const { register } = useAuth();
+
+    const {errors, onFormSubmit, isSubmitting} = useUncontrolledForm({
+        schema: registerSchema,
+        onSubmit: async (values) => {
+            await register(values);
+        },
+        onError: (error, {setFieldError}) => {
+            if (error instanceof FetchError) {
+                if(!error.status) setFieldError("email", "Une erreur est survenue veuillez réessayée");
+            }
+        }
+    })
 
     return (
         <div className={"flex justify-center items-center min-h-dvh"}>
             <form
+                onSubmit={onFormSubmit}
                 className={"max-w-100 bg-neutral-50/30 w-full border border-neutral-100 min-h-60 flex flex-col gap-6 justify-start items-center p-6"}
             >
                 <div>
-                    <div className={"max-w-16 w-full mx-auto"}>
+                    <Link to={"/"} className={"block max-w-16 w-full mx-auto"}>
                         <HwLogo/>
-                    </div>
+                    </Link>
 
                     <h1 className={"text-xl font-semibold"}>
                         S'inscrire
@@ -48,7 +66,7 @@ const Register = () => {
                         <FormError/>
                     </FormField>
 
-                    <FormField className={"flex flex-col gap-2"} required name={"confirm-password"}>
+                    <FormField className={"flex flex-col gap-2"} required name={"confirmPassword"} error={errors?.confirmPassword}>
                         <FormLabel>Mot de passe de confirmation</FormLabel>
                         <HInput type={"password"} placeholder={"ex. password123"}/>
                         <FormError/>
@@ -57,7 +75,7 @@ const Register = () => {
                     <div className={"w-full flex flex-col gap-6"}>
                         <p className={"text-gray-500 text-sm"}>Vous avez dêja un compte ? Connectez vous <Link
                             to={"/auth/login"} className={"underline underline-offset-2"}>ici</Link></p>
-                        <HButton className={"w-full"} type={"submit"}>S'inscrire</HButton>
+                        <HButton disabled={isSubmitting} className={"w-full"} type={"submit"}>S'inscrire</HButton>
                     </div>
                 </div>
             </form>
