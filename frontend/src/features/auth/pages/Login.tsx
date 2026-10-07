@@ -1,6 +1,7 @@
 import HwLogo from "@components/Icon.tsx";
 import HButton from "@ui/HButton.tsx";
 import HInput from "@ui/HInput.tsx";
+
 import FormField from "@ui/Form/FormField.tsx";
 import FormLabel from "@ui/Form/FormLabel.tsx";
 import FormError from "@ui/Form/FormError.tsx";
@@ -8,48 +9,27 @@ import FormError from "@ui/Form/FormError.tsx";
 import { useAuth } from "@features/auth/provider/AuthProvider.tsx";
 import { loginSchema } from "@utils/schema.ts";
 
-import { type SubmitEvent, useState } from "react";
 import { Link } from "react-router";
+
+import { useUncontrolledForm } from "@utils/hooks/useUncontrolledForm.ts";
 
 const Login = () => {
 
     const { login } = useAuth();
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [errors, setErrorState] = useState<Record<string, string>>({})
+    const {errors, onFormSubmit, isSubmitting} = useUncontrolledForm({
+        schema: loginSchema,
+        onSubmit: async (values) => {
+            await login(values);
+        },
+        onError: (error, {setFieldError}) => {
 
-    async function onFormLoginSubmit(event: SubmitEvent<HTMLFormElement>) {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget)
-        const result = loginSchema.safeParse(Object.fromEntries(formData))
-
-        if (!result.success) {
-            const errors: Record<string, string> = {};
-            result.error.issues.map((issue) => {
-                const field = issue.path[0];
-                if (typeof field === "string") {
-                    errors[field] = issue.message;
-                }
-            })
-            setErrorState(errors);
-            return;
         }
-
-        setErrorState({});
-
-        try {
-            setIsSubmitting(true)
-            await login(result.data);
-        } catch (e) {
-            console.log(e)
-        } finally {
-            setIsSubmitting(false);
-        }
-    }
+    })
 
     return (
         <div className={"flex min-h-dvh justify-center items-center"}>
             <form
-                onSubmit={onFormLoginSubmit}
+                onSubmit={onFormSubmit}
                 className={"max-w-100 bg-neutral-50/30 w-full border border-neutral-100 min-h-60 flex flex-col gap-6 justify-start items-center p-6"}>
                 <div className={"w-full"}>
                     <div className={"max-w-28 w-full mx-auto mb-4"}>
