@@ -7,7 +7,7 @@ interface uncontrolledFormArgs<T extends ZodObject> {
     onError: (
         error: unknown,
         actions: {
-            setFieldError: (field: string, message: string) => void
+            setFieldError: (field: Extract<keyof z.infer<T>, string>, message: string) => void
         }
     ) => void;
 }
