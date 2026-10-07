@@ -12,17 +12,21 @@ import { loginSchema } from "@utils/schema.ts";
 import { Link } from "react-router";
 
 import { useUncontrolledForm } from "@utils/hooks/useUncontrolledForm.ts";
+import { FetchError } from "ofetch";
 
 const Login = () => {
 
     const { login } = useAuth();
+
     const {errors, onFormSubmit, isSubmitting} = useUncontrolledForm({
         schema: loginSchema,
         onSubmit: async (values) => {
             await login(values);
         },
         onError: (error, {setFieldError}) => {
-
+            if (error instanceof FetchError) {
+                if(!error.status) setFieldError("email", "Une erreur est survenue veuillez réessayée");
+            }
         }
     })
 
@@ -32,9 +36,9 @@ const Login = () => {
                 onSubmit={onFormSubmit}
                 className={"max-w-100 bg-neutral-50/30 w-full border border-neutral-100 min-h-60 flex flex-col gap-6 justify-start items-center p-6"}>
                 <div className={"w-full"}>
-                    <div className={"max-w-28 w-full mx-auto mb-4"}>
+                    <Link to={"/"} className={"max-w-28 block w-full mx-auto mb-4"}>
                         <HwLogo/>
-                    </div>
+                    </Link>
 
                     <div className={"text-left"}><h1 className={"text-xl font-semibold"}>Se connecter</h1></div>
                 </div>
